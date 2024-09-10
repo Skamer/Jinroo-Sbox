@@ -1,0 +1,120 @@
+@using System;
+@using System.Web;
+@using Sandbox;
+@using Sandbox.UI;
+@using Sandbox.Razor;
+
+@inherits PanelComponent
+@namespace Jinroo
+
+<root>
+  <div class="choices-window">
+    <div class="head">
+      <div class="icon" style=@GetIconTitleStyle()></div>
+      <div class="title">@Title</div>
+    </div>
+    <div class="content">
+      @if(@DescriptionFragment is not null && string.IsNullOrEmpty(Description))
+      {
+        @DescriptionFragment
+      }
+      else 
+      {
+        @* <div class="description">@Description</div> *@
+        <div class="description">@Description</div>
+      }
+    </div>
+    <div class="choices">
+        @foreach (var choice in Choices)
+          {
+            <ChoiceButton
+            @onclick=@(() => OnConfirmedChoice(choice.id)) 
+            Icon=@choice.icon 
+            Label=@choice.label 
+            Color=@choice.color 
+            Styles=@choice.styles
+            />
+          }
+    </div>
+
+    @* <div class="choices-window-title">
+      Title
+    </div>
+      <div class="choices-window-content">
+        @if(@DescriptionFragment is not null && Description != "")
+        {
+          @DescriptionFragment
+        }
+        else {
+          <div class="choices-window-desc">@Description</div>
+        }
+        <div class="choices-window-items">
+          @foreach (var choice in Choices)
+          {
+            <ChoiceButton
+            @onclick=@(() => OnConfirmedChoice(choice.id)) 
+            Icon=@choice.icon 
+            Label=@choice.label 
+            Color=@choice.color 
+            />
+          }
+        </div>
+    </div> *@
+  </div>
+</root>
+
+@code 
+{
+  public Action<string> OnConfirmedChoice;
+
+  public record Choice(string id, string label, string icon, string color, ChoiceButton.StyleProps styles);
+
+  private List<Choice> Choices = new();
+
+  public string Description;
+
+  public RenderFragment DescriptionFragment { get; set;}
+
+  public string Title;
+
+  public string TitleIcon;
+
+  public string GetIconTitleStyle()
+  {
+    if (string.IsNullOrEmpty(TitleIcon))
+      return "";
+
+    return $"background-image: url({TitleIcon});";
+  }
+
+	public void AddChoice(string id, string label, string icon, string color)
+	{
+    Choices.Add(new(id, label, icon, color, new()));
+	}
+
+  public void AddChoice(string id, string label, string icon, ChoiceButton.StyleProps styles)
+  {
+    Choices.Add(new(id, label, icon, "", styles));
+  }
+
+  public void SetDescription(RenderFragment desc)
+  {
+    DescriptionFragment = desc;
+
+    StateHasChanged();
+  }
+
+  public void SetDescription(string desc)
+  {
+    Description = desc;
+  }
+
+  public void ClearChoices()
+  {
+    Choices.Clear();
+    Description = "";
+    DescriptionFragment = null;
+  }
+
+  protected override int BuildHash() => System.HashCode.Combine( Choices.Count, Description, Title);
+}

@@ -1,0 +1,442 @@
+{
+  "__guid": "d1b68604-21ca-4225-8c63-8b5622ae4c42",
+  "GameObjects": [
+    {
+      "__guid": "48792522-42f5-4ef0-ba76-2e04d4d7535f",
+      "Name": "2D Skybox",
+      "Tags": "skybox",
+      "Enabled": true,
+      "NetworkMode": 2,
+      "Components": [
+        {
+          "__type": "SkyBox2D",
+          "__guid": "f69a9373-dbc9-47f0-b351-4abdccedfc1f",
+          "SkyMaterial": "materials/skybox/light_test_sky_night_basic.vmat",
+          "Tint": "1,1,1,1"
+        },
+        {
+          "__type": "EnvmapProbe",
+          "__guid": "0e835ef6-95de-4ee6-933f-7db774a19630",
+          "Bounds": {
+            "Mins": "-512,-512,-512",
+            "Maxs": "512,512,512"
+          },
+          "Feathering": 0.02,
+          "Projection": "Sphere",
+          "Texture": "textures/cubemaps/default2.vtex",
+          "TintColor": "1,1,1,1"
+        }
+      ]
+    },
+    {
+      "__guid": "691d4373-eac9-4e5d-9849-35ed2b45fff6",
+      "Name": "Sun",
+      "Position": "0,0,150",
+      "Rotation": "-0.0729315,0.4822396,0.1305433,0.8631827",
+      "Tags": "light_directional,light",
+      "Enabled": true,
+      "NetworkMode": 2,
+      "Components": [
+        {
+          "__type": "DirectionalLight",
+          "__guid": "de207511-68db-49eb-98d1-f1e850272830",
+          "FogMode": "Enabled",
+          "FogStrength": 1,
+          "LightColor": "1,1,1,1",
+          "Shadows": true,
+          "SkyColor": "1,1,1,1"
+        }
+      ]
+    },
+    {
+      "__guid": "c144420c-1257-4c8a-afff-749e0ce5604e",
+      "Name": "Plane",
+      "Scale": "10,10,10",
+      "NetworkMode": 2,
+      "Components": [
+        {
+          "__type": "ModelRenderer",
+          "__guid": "8560167f-f948-4982-a994-2ad377b48626",
+          "BodyGroups": 18446744073709551615,
+          "MaterialOverride": "materials/default.vmat",
+          "Model": "models/dev/plane.vmdl",
+          "RenderType": "On",
+          "Tint": "0.39546,0.51163,0.27128,1"
+        },
+        {
+          "__type": "BoxCollider",
+          "__guid": "d3c45406-8a07-42b3-82f0-d7ee8d4c7d3d",
+          "Center": "0,0,-5",
+          "IsTrigger": false,
+          "Scale": "100,100,10",
+          "Static": false
+        }
+      ]
+    },
+    {
+      "__guid": "1b433cf5-f175-4889-b6cd-bd89b194407d",
+      "Name": "Interface",
+      "Position": "97.41872,89.83823,-60.92772",
+      "Enabled": true,
+      "NetworkMode": 1,
+      "Components": [
+        {
+          "__type": "ScreenPanel",
+          "__guid": "29c1960c-9336-4154-9b71-351bd0107062",
+          "AutoScreenScale": true,
+          "Opacity": 1,
+          "Scale": 1,
+          "ZIndex": 100
+        },
+        {
+          "__type": "GameHUD",
+          "__guid": "ecfaf1f4-07d8-4431-b1b4-08ea3e5f60ee",
+          "__enabled": false
+        },
+        {
+          "__type": "LobbyPanel",
+          "__guid": "e74a9043-9805-474c-947b-84c1d00099c9",
+          "Lobby": {
+            "_type": "component",
+            "component_id": "cb9855f2-0928-4b53-9cf8-83f3f54a57a5",
+            "go": "babd561e-700e-4c56-bd00-9ff5124783bb",
+            "component_type": "GameLobby"
+          }
+        },
+        {
+          "__type": "ChoicesPanel",
+          "__guid": "2d45cf23-aa75-4c3b-ae54-d210b30400eb",
+          "__enabled": false
+        }
+      ]
+    },
+    {
+      "__guid": "babd561e-700e-4c56-bd00-9ff5124783bb",
+      "Name": "GameLobby",
+      "Position": "97.41872,89.83823,-60.92772",
+      "Enabled": true,
+      "NetworkMode": 1,
+      "Components": [
+        {
+          "__type": "GameLobby",
+          "__guid": "cb9855f2-0928-4b53-9cf8-83f3f54a57a5",
+          "MaxBots": 0,
+          "PlayerPawnPrefab": {
+            "_type": "gameobject",
+            "prefab": "prefabs/player_pawn.prefab"
+          },
+          "Spawn": {
+            "_type": "gameobject",
+            "go": "3760dbcb-b831-4925-9d92-ad8ae2279b83"
+          },
+          "UserInterface": {
+            "_type": "gameobject",
+            "go": "1b433cf5-f175-4889-b6cd-bd89b194407d"
+          }
+        }
+      ]
+    },
+    {
+      "__guid": "3760dbcb-b831-4925-9d92-ad8ae2279b83",
+      "Name": "Spawn",
+      "Position": "0,0,17.055",
+      "Enabled": true,
+      "NetworkMode": 2,
+      "Components": [
+        {
+          "__type": "SpawnPoint",
+          "__guid": "6a2f8770-b92f-4c42-8003-f04589e5a033",
+          "Color": "1,1,1,1"
+        },
+        {
+          "__type": "CubemapFog",
+          "__guid": "525f3e3b-a4e0-4d96-8e6c-4f74d2b4c2c8",
+          "__enabled": false,
+          "Blur": 1,
+          "EndDistance": 5000,
+          "FalloffExponent": 2,
+          "HeightExponent": 2,
+          "HeightStart": 2000,
+          "HeightWidth": 0,
+          "Sky": "materials/skybox/light_test_sky_night_basic.vmat",
+          "StartDistance": 1000
+        },
+        {
+          "__type": "VolumetricFogVolume",
+          "__guid": "b7839ad1-3f4b-4786-a2ec-9dc5736e3825",
+          "__enabled": false,
+          "Bounds": {
+            "Mins": "-600,-600,-150",
+            "Maxs": "600,600,150"
+          },
+          "FalloffExponent": 1,
+          "Strength": 1
+        }
+      ]
+    },
+    {
+      "__guid": "58f3a5cf-67b7-449c-92ac-b4ba2f447cf0",
+      "Name": "Cube",
+      "Position": "-167.25,0,24.36859",
+      "NetworkMode": 2,
+      "Components": [
+        {
+          "__type": "ModelRenderer",
+          "__guid": "32dff7fe-8b88-41f2-a000-834355ebe12a",
+          "BodyGroups": 18446744073709551615,
+          "Model": "models/dev/box.vmdl",
+          "RenderType": "On",
+          "Tint": "0.51628,0.04082,0.04082,1"
+        }
+      ]
+    },
+    {
+      "__guid": "c6fc571a-ae5d-400e-a4d6-4dd0e88f3731",
+      "Name": "Cube (1)",
+      "Position": "434.3268,0,24.36859",
+      "NetworkMode": 2,
+      "Components": [
+        {
+          "__type": "ModelRenderer",
+          "__guid": "7fa4beaa-b8cb-4a70-8da0-42eb83249468",
+          "BodyGroups": 18446744073709551615,
+          "Model": "models/dev/box.vmdl",
+          "RenderType": "On",
+          "Tint": "0.04967,0.76279,0.67959,1"
+        }
+      ]
+    },
+    {
+      "__guid": "6f0c80b1-2d57-4f35-a22f-a922bc0cce6d",
+      "Name": "NightFog",
+      "Tags": "particles",
+      "NetworkMode": 2,
+      "Components": [
+        {
+          "__type": "ParticleEffect",
+          "__guid": "eb613991-56ae-4eb2-9738-eaff49843db8",
+          "Alpha": {
+            "Type": "Curve",
+            "CurveA": [
+              {
+                "in": -39.333374,
+                "out": 39.333374
+              },
+              {
+                "x": 0.070197046,
+                "y": 1
+              },
+              {
+                "x": 1
+              }
+            ],
+            "Constants": "1,0,0,0"
+          },
+          "ApplyColor": true,
+          "ApplyRotation": true,
+          "ApplyShape": true,
+          "Bounce": {
+            "Constants": "1,0,0,0"
+          },
+          "Brightness": {
+            "Type": "Range",
+            "Evaluation": "Particle",
+            "Constants": "0.3,0.7,0,0"
+          },
+          "Bumpiness": {
+            "Constants": "1,0,0,0"
+          },
+          "Collision": false,
+          "CollisionRadius": 0,
+          "Damping": {
+            "Constants": "2,0,0,0"
+          },
+          "DieOnCollisionChance": {},
+          "Force": false,
+          "ForceDirection": "0,0,0",
+          "ForceScale": {
+            "Constants": "1,0,0,0"
+          },
+          "Friction": {
+            "Constants": "1,0,0,0"
+          },
+          "Gradient": {
+            "Evaluation": "Particle",
+            "GradientA": {
+              "color": [
+                {
+                  "t": 0.5,
+                  "c": "1,1,1,1"
+                }
+              ],
+              "alpha": []
+            },
+            "GradientB": {
+              "color": [
+                {
+                  "t": 0.5,
+                  "c": "1,1,1,1"
+                }
+              ],
+              "alpha": []
+            },
+            "ConstantA": "0.13023,0.13023,0.13023,1",
+            "ConstantB": "1,1,1,1"
+          },
+          "Lifetime": {
+            "Type": "Range",
+            "Evaluation": "Particle",
+            "Constants": "2,5,0,0"
+          },
+          "MaxParticles": 80,
+          "PerParticleTimeScale": {
+            "Constants": "1,0,0,0"
+          },
+          "PreWarm": 0,
+          "PushStrength": {},
+          "Roll": {
+            "Type": "Range",
+            "Evaluation": "Particle",
+            "Constants": "0,360,0,0"
+          },
+          "Scale": {
+            "Type": "Range",
+            "Constants": "1,2,0,0"
+          },
+          "SequenceId": {},
+          "SequenceSpeed": {
+            "Constants": "1,0,0,0"
+          },
+          "SequenceTime": {
+            "Constants": "1,0,0,0"
+          },
+          "SheetSequence": false,
+          "Space": "World",
+          "StartVelocity": {
+            "Evaluation": "Particle",
+            "Constants": "10,0,0,0"
+          },
+          "Stretch": {},
+          "TimeScale": 1,
+          "Tint": "0,0,0,1"
+        },
+        {
+          "__type": "ParticleSpriteRenderer",
+          "__guid": "577e5e47-c355-4889-a57e-5816a6a4d8ae",
+          "Additive": false,
+          "BlurAmount": 0.5,
+          "BlurOpacity": 0.5,
+          "BlurSpacing": 0.5,
+          "DepthFeather": 0,
+          "FaceVelocity": false,
+          "FogStrength": 0,
+          "LeadingTrail": true,
+          "MotionBlur": false,
+          "Opaque": false,
+          "RotationOffset": 0,
+          "Scale": 400,
+          "Shadows": false,
+          "SortMode": "ByDistance",
+          "Texture": "materials/particles/smoke/render/smokeloop_i_0.vtex"
+        },
+        {
+          "__type": "ParticleRingEmitter",
+          "__guid": "781e2796-e258-4041-b258-81a26627e111",
+          "Angle": {
+            "Constants": "360,0,0,0"
+          },
+          "AngleStart": {},
+          "Burst": 0,
+          "Delay": 0,
+          "DestroyOnEnd": false,
+          "Duration": 5,
+          "Flatness": {},
+          "Loop": true,
+          "Radius": {
+            "Constants": "400,0,0,0"
+          },
+          "Rate": 500,
+          "Thickness": {
+            "Constants": "30,0,0,0"
+          },
+          "VelocityFromCenter": {},
+          "VelocityFromRing": {}
+        },
+        {
+          "__type": "VolumetricFogVolume",
+          "__guid": "e0cb6816-1642-418f-bdfe-223d559434bd",
+          "__enabled": false,
+          "Bounds": {
+            "Mins": "-600,-600,-150",
+            "Maxs": "600,600,150"
+          },
+          "FalloffExponent": 1,
+          "Strength": 1
+        }
+      ]
+    },
+    {
+      "__guid": "6de0a7fb-cefe-4296-afb1-73eb29f2b7c3",
+      "Name": "Map",
+      "Position": "-22.32388,-312.6597,91.99977",
+      "Enabled": true,
+      "NetworkMode": 2,
+      "Components": [
+        {
+          "__type": "MapInstance",
+          "__guid": "a15272f8-619e-420c-89e9-18ac5311bdbd",
+          "MapName": "maps/village.vmap",
+          "UseMapFromLaunch": true
+        }
+      ],
+      "Children": []
+    },
+    {
+      "__guid": "c931d0dc-ac52-47ac-868b-8b8d2127c58a",
+      "Name": "Fog",
+      "Enabled": true,
+      "NetworkMode": 2,
+      "Components": [
+        {
+          "__type": "CubemapFog",
+          "__guid": "e86cf737-6bf6-4459-a0c2-c0b31dafc34f",
+          "Blur": 1,
+          "EndDistance": 5000,
+          "FalloffExponent": 2,
+          "HeightExponent": 2,
+          "HeightStart": 2000,
+          "HeightWidth": 0,
+          "Sky": "materials/skybox/light_test_sky_night_basic.vmat",
+          "StartDistance": 1000
+        }
+      ]
+    }
+  ],
+  "SceneProperties": {
+    "FixedUpdateFrequency": 50,
+    "Lerping": true,
+    "MaxFixedUpdates": 5,
+    "NetworkFrequency": 30,
+    "ThreadedAnimation": true,
+    "TimeScale": 1,
+    "UseFixedUpdate": true,
+    "NavMesh": {
+      "Enabled": false,
+      "IncludeStaticBodies": true,
+      "IncludeKeyframedBodies": true,
+      "EditorAutoUpdate": true,
+      "AgentHeight": 64,
+      "AgentRadius": 16,
+      "AgentStepSize": 18,
+      "AgentMaxSlope": 40,
+      "ExcludedBodies": "",
+      "IncludedBodies": ""
+    }
+  },
+  "Title": "gamelobby",
+  "Description": "",
+  "LastSaved": "2024-03-17T03:52:27.1045401\u002B01:00",
+  "ResourceVersion": 1,
+  "__version": 1,
+  "__references": []
+}

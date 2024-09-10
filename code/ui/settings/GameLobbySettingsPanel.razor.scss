@@ -1,0 +1,43 @@
+GameLobbySettingsPanel {
+  width: 550px;
+  // background-color: aqua;
+  // height: 500px;
+  flex-direction: column;
+  gap: 10px;
+  background-color: rgba(32, 32, 34, 0.808);
+  padding: 10px;
+}
+
+.heading {
+  font-weight: 800;
+  font-size: 20px;
+  color: bisque;
+}
+
+.players-slider {
+  flex-direction: column;
+}
+
+.players-range {
+  justify-content: space-between;
+  align-items: flex-end;
+}
+
+.player-range-text {
+  color: white;
+}
+
+.player-text {
+  color: white;
+  font-size: 25px;
+}
+
+.roles {
+  flex-wrap: wrap;
+}
+
+// SliderControl.ShowValueTooltip doesn't work, so this we
+// hide it. Remove that once it's fixed
+.value-tooltip {
+  display: none;
+}

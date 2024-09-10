@@ -1,0 +1,40 @@
+LobbyPlayerCard {
+  height: 35px;
+  width: 250px;
+  background-color: rgba(17, 6, 44, 0.74);
+  border-width: 1px;
+  border-color: rgba(41, 41, 41, 0.527);
+  align-items: center;
+  justify-content: space-between;
+  color: wheat;
+}
+
+.avatar {
+  margin-left: 5px;
+  width: 25px;
+  height: 25px;
+}
+
+.name {
+  flex-grow: 1;
+  width: 100%;
+  justify-content: center;
+  align-self: center;
+  margin-right: 10px;
+}
+
+.circle {
+  border-radius: 50%;
+  width: 10px;
+  height: 10px;
+  align-self: center;
+  margin-right: 10px;
+}
+
+.ready {
+  background-color: greenyellow;
+}
+
+.not-ready {
+  background-color: red;
+}

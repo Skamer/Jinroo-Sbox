@@ -1,0 +1,53 @@
+RoleSettingCard {
+  width: 108px;
+  height: 100px;
+  color: white;
+  font-size: 20px;
+  font-weight: 800;
+  margin: 15px;
+}
+
+.icon {
+  width: 84px;
+  height: 84px;
+  left: 10px;
+}
+
+.side-action {
+  position: absolute;
+  width: 24px;
+  height: 24px;
+  justify-content: center;
+  align-items: center;
+  background-color: rgb(99, 99, 99);
+}
+
+.side-action-minus {
+  top: 25px;
+  left: 0px;
+}
+
+.side-action-plus {
+  top: 25px;
+  right: 0px;
+}
+
+.counter-action {
+  position: absolute;
+  bottom: 0px;
+  left: 38px;
+  height: 32px;
+  width: 32px;
+  justify-content: center;
+  align-items: center;
+  border-radius: 50px;
+  background-color: rgb(59, 91, 121);
+}
+
+.counter-remove {
+  background-color: red;
+}
+
+.counter-add {
+  background-color: green;
+}

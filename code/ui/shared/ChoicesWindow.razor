@@ -1,0 +1,39 @@
+@using System;
+@using Sandbox;
+@using Sandbox.UI;
+
+@inherits Panel;
+@namespace Jinroo
+@attribute [StyleSheet]
+
+<root>
+  <div class="title">
+    Title
+  </div>
+  <div class="description">Questions</div>
+  <div class="choices">
+    @foreach (var choice in Choices )
+    {
+      <ChoiceButton Icon=@choice.icon Label=@choice.label Color=@choice.color />
+      @* <ChoiceButton Icon="/textures/roles/card_role_witch.svg" Label="Use the death flask" /> *@
+    }
+  </div>
+</root>
+
+@code 
+{
+  public Action<string> OnChoiceSelected;
+
+  public record Choice(string id, string label, string icon, string color);
+
+  private List<Choice> Choices = new();
+
+  
+  public void AddChoice(string id, string label, string icon = "", string color = "")
+  {
+    Choices.Add(new(id, label, icon, color));
+  }
+
+
+  protected override int BuildHash() => HashCode.Combine(Choices.Count);
+}

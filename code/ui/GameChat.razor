@@ -1,0 +1,241 @@
+@using System;
+@using Sandbox;
+@using Sandbox.UI;
+@inherits Panel;
+@attribute [StyleSheet]
+@namespace Jinroo
+
+<root>
+  <div class="channels">
+    <div class="channel" @onclick=@(() => CurrentChannel = GameChannels.GLOBAL) >
+      <img src="textures/chat/global_channel.svg" style=@(GetIconTintStyle(GameChannels.GLOBAL))/>
+    </div>
+
+    @if(ChannelsEntries.ContainsKey(GameChannels.LOVERS)) 
+    {
+      <div class="channel" @onclick=@(() => CurrentChannel = GameChannels.LOVERS) >
+        <img src="textures/chat/lovers_channel.svg" style=@(GetIconTintStyle(GameChannels.LOVERS))/>
+      </div>
+    }
+
+    @if(ChannelsEntries.ContainsKey(GameChannels.DEATH)) {
+      <div class="channel" @onclick=@(() => CurrentChannel = GameChannels.DEATH)>
+        <img src="textures/chat/death_channel.svg" style=@(GetIconTintStyle(GameChannels.DEATH)) />
+      </div>
+    }
+
+  </div>
+  <div class="entries" @ref="EntriesBox">
+    @foreach (Entry entry in GetCurrentChannelEntries()) 
+    {
+      @if(entry.isServerMessage) 
+      {
+        @if(entry.type == ServerMessageType.TURN) {
+          <div class="server-phase">@entry.message</div>
+        } else if (entry.type == ServerMessageType.DEATH) {
+          <div class="server-entry">
+              <div class="icon"><img src="textures/skull.svg"/></div>
+              <div class="message death">@entry.message</div>
+          </div>          
+        } else if (entry.type == ServerMessageType.VOTE) {
+          <div class="server-entry">
+              <div class="message vote">@entry.message</div>
+          </div>
+        } else {
+          <div class="server-entry">
+              <div class="message info">@entry.message</div>
+          </div>       
+        }
+      }
+      else {
+        <div class="entry">
+            <div class="author">@entry.author</div>
+            <div class="message">@entry.message</div>
+        </div>
+      }
+    }
+
+      @* <div class="server-entry">
+          <div class="message info">Skamer a été éliminé par le village, il était Voyante</div>
+      </div>
+      <div class="server-entry">
+          <div class="icon"><img src="textures/skull.svg"/></div>
+          <div class="message death">Skamer a été éliminé par le village, il était Voyante</div>
+      </div>
+        <div class="server-entry">
+          <div class="message vote">Skamer a voté contre Takenshin</div>
+      </div>
+
+      <div class="server-phase">Turn 1</div> *@
+  </div>
+  <div class="input">
+    <TextEntry @ref="InputBox" onsubmit="@ChatFinished"></TextEntry>
+  </div>
+</root>
+
+@code {
+   public Action<string, GameChannels> OnMessageEntered;
+
+  public record Entry(string author, string message, bool isServerMessage, ServerMessageType type );
+
+  private List<Entry> Entries = new();
+
+  private Dictionary<GameChannels, List<Entry>> ChannelsEntries = new()
+    {
+      { GameChannels.GLOBAL, new()}
+    };
+
+  private GameChannels CurrentChannel = GameChannels.GLOBAL;
+
+  public TextEntry InputBox;
+
+  private Panel EntriesBox;
+
+  public override void Tick()
+  {
+
+    if (InputBox is null)
+      return; 
+
+    if (Input.Pressed("chat"))
+    {
+      InputBox.Focus();
+    }
+
+    @* EntriesBox.PreferScrollToBottom = true; *@
+    @* Log.Warning($"SCROL: {EntriesBox?.ScrollSize} / {EntriesBox?.HasScrollY} / {EntriesBox?.ScrollOffset} / {EntriesBox?.ScrollVelocity}"); *@
+  }
+
+  public List<Entry> GetCurrentChannelEntries()
+  {
+    if (ChannelsEntries.ContainsKey(CurrentChannel)) 
+      return ChannelsEntries[CurrentChannel];
+  
+
+    return new();
+  }
+
+
+  @* public void AddTextLocal(string author, string message)
+  {
+    Entries.Add(new (author, message, ));
+
+    StateHasChanged();
+  } *@
+
+  @* protected override void OnUpdate()
+  {/*
+    if (InputBox is null)
+      return; 
+
+    if (Input.Pressed("chat"))
+    {
+      InputBox.Focus();
+    }*/
+    // base.OnUpdate();
+
+
+		if (Input.Pressed("ToggleMouseCursor"))
+		{
+			if(Panel.HasClass("mouse-cursor"))
+			{
+				Panel.RemoveClass("mouse-cursor");
+			}
+			else 
+			{
+				Panel.AddClass("mouse-cursor");
+			}
+		}
+
+    
+    if (EntriesBox is not null)
+    {
+      // EntriesBox.ScrollOffset = new Vector2( 0, 200 );
+
+      // EntriesBox.TryScrollToBottom();
+      // Log.Info($"{EntriesBox.HasMouseCapture} / {EntriesBox.HasFocus} / { EntriesBox.HasScrollY}");
+    }
+
+    if (Panel.HasHovered)
+      Panel.Tooltip = "This is a tooltip text";
+    else 
+      Panel.Tooltip = null;
+
+    Log.Error($"Tooltip: {Panel.HasTooltip}");
+
+  } *@
+
+  public string GetIconTintStyle(GameChannels channel)
+  {
+    if (CurrentChannel != channel)
+      return "background-image-tint: white";
+
+    if (channel == GameChannels.GLOBAL)
+    {
+      return $"background-image-tint: rgba(63, 193, 193, 1);";
+    } else if (channel == GameChannels.LOVERS) 
+    {
+      return $"background-image-tint: rgba(183, 52, 52, 1);";
+    } else if (channel == GameChannels.DEATH) {
+      return $"background-image-tint: rgba(109, 102, 102, 1);";
+    }
+
+    return "background-image-tint: white";
+  }
+
+
+  public void AddLocalChatMessage(string author, string message, GameChannels channel = GameChannels.GLOBAL)
+  {
+    List<Entry> channelEntries; 
+    if (ChannelsEntries.ContainsKey(channel))
+    {
+      channelEntries = ChannelsEntries[channel];
+    }
+    else
+    {
+      channelEntries = new();
+      ChannelsEntries[channel] = channelEntries;
+    }
+
+    channelEntries.Add(new (author, message, false, ServerMessageType.INFO));
+
+    EntriesBox?.TryScrollToBottom();
+    EntriesBox.PreferScrollToBottom = true;
+
+    StateHasChanged();
+  }
+
+  public void AddLocalServerMessage(string message, ServerMessageType type, GameChannels channel = GameChannels.GLOBAL)
+  {
+    List<Entry> channelEntries; 
+    if (ChannelsEntries.ContainsKey(channel))
+    {
+      channelEntries = ChannelsEntries[channel];
+    }
+    else
+    {
+      channelEntries = new();
+      ChannelsEntries[channel] = channelEntries;
+    }
+
+    channelEntries.Add(new ("", message, true, type));
+
+    EntriesBox?.TryScrollToBottom();
+    EntriesBox.PreferScrollToBottom = true;
+
+    StateHasChanged();
+  }
+
+  private void ChatFinished()
+  {
+    var text = InputBox.Text;
+    InputBox.Text = "";
+
+    if (string.IsNullOrWhiteSpace(text))
+      return;
+
+    OnMessageEntered?.Invoke(text, CurrentChannel);
+  }
+
+  protected override int BuildHash() => System.HashCode.Combine( CurrentChannel);
+}

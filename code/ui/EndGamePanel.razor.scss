@@ -1,0 +1,98 @@
+EndGamePanel {
+  background-color: rgb(26, 26, 32);
+  border-radius: 10%;
+  flex-direction: column;
+  width: 600px;
+  pointer-events: auto;
+  justify-content: space-between;
+  padding-bottom: 20px;
+  pointer-events: all;
+  gap: 20px;
+
+  .head {
+    background-color: orange;
+    border-radius: 10% 10% 0% 0%;
+    padding: 5px;
+
+    .icon {
+      width: 64px;
+      height: 64px;
+      border-radius: 50%;
+      border-color: rgb(0, 0, 0);
+      border-width: 2px;
+
+      background-image: url("textures/roles/card_role_werewolf.svg");
+      background-size: contain;
+    }
+
+    .title {
+      font-size: 20px;
+      font-weight: 800;
+      color: white;
+      align-items: center;
+      margin-left: 10px;
+    }
+  }
+
+  .congrats {
+    flex-direction: column;
+    padding-left: 20px;
+    padding-right: 20px;
+    flex-shrink: 0;
+    flex-grow: 1;
+    gap: 20px;
+
+    // background-color: aqua;
+
+    .winner-team {
+      background-color: rgba(38, 88, 180, 0.87);
+      border-radius: 10px;
+      padding: 20px;
+      gap: 10px;
+
+      .icon {
+        width: 42px;
+        height: 42px;
+
+        border-radius: 50%;
+        background-color: black;
+        border-color: rgb(0, 0, 0);
+        border-width: 2px;
+
+        background-image: url("textures/congrat.svg");
+        background-size: contain;
+      }
+    }
+
+    .neutral {
+      background-color: rgb(17, 54, 54);
+      border-radius: 50px;
+      min-height: 50px;
+      padding: 10px;
+      gap: 10px;
+
+      .icon {
+        width: 32px;
+        height: 32px;
+
+        border-radius: 50%;
+        border-color: rgb(0, 0, 0);
+        border-width: 2px;
+
+        background-image: url("textures/roles/card_role_werewolf.svg");
+        background-size: contain;
+      }
+    }
+  }
+}
+
+.return {
+  background-color: rgba(255, 0, 0, 0.24);
+  height: 50px;
+  min-width: 150px;
+  color: white;
+  align-self: center;
+  border-radius: 15%;
+  justify-content: center;
+  align-items: center;
+}

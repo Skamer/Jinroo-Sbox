@@ -1,0 +1,66 @@
+GameTooltip {
+  z-index: 10000;
+  background-color: rgb(26, 26, 32);
+  width: 500px;
+  height: 300px;
+  border-radius: 10px;
+  color: white;
+  flex-direction: column;
+  gap: 30px;
+
+  .title {
+    background-color: rgba(255, 166, 0, 0.733);
+    border-radius: 10px 10px 0% 0%;
+    height: 30px;
+    justify-content: center;
+    align-items: center;
+
+    font-size: 18px;
+    font-family: Poppins;
+    font-weight: 800;
+  }
+
+  .role-team {
+    margin-left: 15px;
+    margin-right: 15px;
+    background-color: rgba(77, 120, 211, 0.884);
+    border-radius: 5px 5px 5px 5px;
+    padding: 20px;
+    gap: 10px;
+
+    .role-label {
+      flex-shrink: 0;
+      color: orange;
+      font-size: 14px;
+      font-weight: 800;
+
+      align-self: flex-start;
+      justify-content: flex-start;
+      align-items: flex-end;
+    }
+
+    .role-text {
+      color: whitesmoke;
+    }
+  }
+
+  .role-skill {
+    background-color: rgba(77, 120, 211, 0.884);
+    border-radius: 5px 5px 5px 5px;
+    padding: 20px;
+    margin-left: 15px;
+    margin-right: 15px;
+    gap: 10px;
+
+    .role-label {
+      flex-shrink: 0;
+      color: orange;
+      font-size: 14px;
+      font-weight: 800;
+    }
+
+    .role-text {
+      color: whitesmoke;
+    }
+  }
+}

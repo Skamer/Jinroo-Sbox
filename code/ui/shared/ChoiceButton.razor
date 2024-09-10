@@ -1,0 +1,118 @@
+@using Sandbox;
+@using Sandbox.UI
+
+@inherits Panel
+@namespace Jinroo
+@attribute [StyleSheet]
+
+<root>
+  @if(IsFontIcon) {
+    <div class="font-icon" style=@GetIconBackgroundStyle()>
+      <IconPanel style=@GetIconColorStyle() Text=@Icon />
+    </div>
+  }
+  else {
+    @if (!string.IsNullOrEmpty(Icon))
+    {
+      <div class="image-icon" style="@($"background-image: url({Icon}); {@GetIconBackgroundStyle()}")"></div>
+    } else {
+      <div class="image-icon" style="@($"{@GetIconBackgroundStyle()}")"></div>
+    }
+  }
+  <div class="content" style=@GetBackgroundColorStyle()>
+    @Label
+  </div>
+</root>
+
+@code 
+{
+  public struct StyleProps
+  {
+    public string IconColor;
+    public string IconBackground;
+
+    public string BackgroundColor;
+
+    public string TextColor;
+  }
+
+  private bool IsFontIcon = true;
+
+  public string GetIconBackgroundStyle()
+  {
+    var bgColor = Styles.IconBackground;
+    if(string.IsNullOrEmpty(bgColor))
+      return "";
+
+
+    return $"background-color: {bgColor}";
+  }
+
+  public string GetIconColorStyle()
+  {
+    var textColor = Styles.IconColor;
+    if(string.IsNullOrEmpty(textColor))
+      return "";
+
+
+    return $"color: {textColor}";
+  }
+
+  public string GetTextColorStyle()
+  {
+    var textColor = Styles.TextColor;
+
+    if(string.IsNullOrEmpty(textColor))
+      return "";
+
+
+    return $"color: {textColor}";
+  }
+
+  public string GetBackgroundColorStyle()
+  {
+    var bgColor = Styles.BackgroundColor;
+
+    if(string.IsNullOrEmpty(bgColor))
+      return "";
+
+    return $"background-color: {bgColor};";
+  }
+
+
+  private string _icon = "";
+  public string Icon {
+    get => _icon;
+    set {
+      string iconFontPrefix = "icon:";
+      if (value.StartsWith(iconFontPrefix))
+      {
+        string content = value.Substring(iconFontPrefix.Length);
+        IsFontIcon = true;
+        _icon = content;
+      } else {
+        IsFontIcon = false;
+        _icon = value;
+      }
+    }
+  }
+
+  public string Label;
+
+  public string Color = "inherit";
+
+  public StyleProps Styles = new();
+
+  // IconColor IconBackground 
+  // BackgroundColor 
+  // 
+
+
+  private string GetFontColorValue()
+  {
+    if (Color != "")
+      return $"color: {Color}";
+    else
+      return "";
+  }
+}

@@ -1,0 +1,49 @@
+{
+  "Id": "dca1f298-9347-4d06-b5b4-45e231ebcac8",
+  "GameObjects": [
+    {
+      "Id": "029fe187-0ba3-48ce-ae7e-de706205bb9d",
+      "Name": "Screen",
+      "Position": "556.9192,256.9193,-363.3387",
+      "Enabled": true,
+      "Components": [
+        {
+          "__type": "ScreenPanel",
+          "AutoScreenScale": true,
+          "Opacity": 1,
+          "Scale": 1,
+          "ZIndex": 100
+        },
+        {
+          "__type": "MainMenu",
+          "MyStringValue": "Hello World!"
+        }
+      ]
+    }
+  ],
+  "SceneProperties": {
+    "FixedUpdateFrequency": 50,
+    "Lerping": true,
+    "MaxFixedUpdates": 5,
+    "NetworkFrequency": 30,
+    "ThreadedAnimation": true,
+    "TimeScale": 1,
+    "UseFixedUpdate": true,
+    "NavMesh": {
+      "Enabled": false,
+      "IncludeStaticBodies": true,
+      "IncludeKeyframedBodies": true,
+      "EditorAutoUpdate": true,
+      "AgentHeight": 64,
+      "AgentRadius": 16,
+      "AgentStepSize": 18,
+      "AgentMaxSlope": 40,
+      "ExcludedBodies": "",
+      "IncludedBodies": ""
+    }
+  },
+  "Title": "main",
+  "Description": "",
+  "LastSaved": "2024-02-27T20:42:41.8572304\u002B01:00",
+  "__references": []
+}

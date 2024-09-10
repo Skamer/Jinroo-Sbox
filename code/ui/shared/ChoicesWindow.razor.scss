@@ -1,0 +1,41 @@
+ChoicesWindow {
+  position: absolute;
+  z-index: 100;
+  width: 500px;
+  height: 600px;
+  // background-color: #001d1d;
+  // border-radius: 30px 30px 0px 0px;
+
+  flex-direction: column;
+  color: white;
+}
+
+.title {
+  width: 100%;
+  background-color: orange;
+  border-radius: 20px 20px 0px 0px;
+}
+
+.description {
+  width: 100%;
+  background-color: #16003f;
+  padding: 50px 10px 50px 10px;
+}
+
+.choices {
+  width: 100%;
+  padding: 50px 10px 50px 10px;
+  background-color: #16003f;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.choice {
+  width: 100%;
+  background-color: rgba(148, 148, 148, 0.377);
+}
+
+.choice-icon {
+  width: 25px;
+  height: 25px;
+}

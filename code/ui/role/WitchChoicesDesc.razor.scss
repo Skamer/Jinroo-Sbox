@@ -1,0 +1,13 @@
+WitchChoicesDesc {
+  gap: 10;
+  flex-direction: column;
+  width: 100%;
+
+  .target {
+    background-color: rgba(182, 58, 0, 0.664);
+    color: white;
+    border-radius: 5px;
+    padding: 5px;
+    align-self: center;
+  }
+}

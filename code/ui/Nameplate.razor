@@ -1,0 +1,61 @@
+@using Sandbox;
+@using Sandbox.UI;
+
+@inherits PanelComponent
+@namespace Jinroo
+
+<root>
+	@if (VoteCount > 0)
+	{
+		<div class="vote" style="color: @(GetVoteColor())">@VoteCount Vote</div>
+	}
+	<div class="title" style="color: @(GetNameColor())">@Name</div>
+
+	@if(IsLover)
+	{
+		<div class="lover">
+			<img src="/textures/lover.svg"/>
+		</div>
+	}
+</root>
+
+@code
+{
+	public string Name;
+
+	public int PlayerIndex = -1;
+
+	public int VoteCount= 0;
+
+	public bool HasVotedHim = true;
+
+	public RoleType RType = RoleType.NONE;
+
+	public bool IsLover = false;
+
+	public string GetVoteColor()
+	{
+		if (HasVotedHim)
+			return "cyan";
+
+		return "orange";
+	}
+
+	public string GetNameColor()
+	{
+		if (RType == RoleType.WEREWOLF)
+			return "#ff0000";
+
+		return "#ffffff";
+	}
+
+	protected override void  OnAwake()
+	{
+		base.OnAwake();
+	}
+
+	/// <summary>
+	/// the hash determines if the system should be rebuilt. If it changes, it will be rebuilt
+	/// </summary>
+	protected override int BuildHash() => System.HashCode.Combine(Name, RType, VoteCount, HasVotedHim, IsLover);
+}

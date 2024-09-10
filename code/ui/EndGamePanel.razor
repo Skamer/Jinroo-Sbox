@@ -1,0 +1,129 @@
+@using System;
+@using Sandbox;
+@using Sandbox.UI;
+@inherits Panel;
+@attribute [StyleSheet]
+@namespace Jinroo
+
+<root>
+    <div class="head">
+      <div class="icon" style="@($"background-image: url({GetIconTitle()})")"></div>
+      <div class="title">
+        @GetVictoryTitle()
+      </div>
+    </div>
+    
+    @if (Winners is not null)
+    {
+      <div class="congrats">
+        <div class="winner-team">
+          <div class="icon"></div>
+          <div>@WinnerText</div>
+        </div>
+
+        @foreach(var winnerIndex in Winners)
+        {
+          @if(IsNeutralWinner(winnerIndex))
+          {
+            <div class="neutral">
+              <div class="icon" style="@($"background-image: url({@GetNeutralIcon(winnerIndex)})")"></div>
+              <div>@GetNeutralWinText(winnerIndex)</div>
+            </div>            
+          }
+        }
+      </div>
+    }
+    <div class="return" @onclick=@(() => OnReturnToLobby?.Invoke() )>Return to Lobby</div>
+</root>
+
+
+@code
+{
+
+  public Action OnReturnToLobby;
+
+  public string GetIconTitle()
+  {
+    if (WinnerTeam == RoleTeam.WEREWOLVES) 
+      return "textures/roles/card_role_werewolf.svg";
+    else if (WinnerTeam == RoleTeam.VILLAGE) 
+      return "textures/roles/card_role_villagers.svg";
+    else if (WinnerTeam == RoleTeam.LOVERS) 
+      return "textures/lover.svg";
+    else
+      return "textures/roles/card_role_unknown.svg";
+
+  }
+
+  public string GetVictoryTitle()
+  {
+    if(WinnerTeam == RoleTeam.WEREWOLVES) 
+      return "The Werewolves have won !";
+    else if(WinnerTeam == RoleTeam.VILLAGE) 
+      return "The Village has won !";
+    else if (WinnerTeam == RoleTeam.LOVERS) 
+      return "The Lovers have won !";
+
+    return "No Team has won !";
+  }
+
+  public bool IsNeutralWinner(int playerIndex)
+  {
+    var roleKey = GetRoleKey(playerIndex);
+    if (roleKey != "")
+      return false;
+
+    
+    return GameplayStatics.GetRegisteredRole(roleKey).Team == RoleTeam.NEUTRAL;
+  }
+
+  public string GetRoleKey(int playerIndex)
+  {
+    if (PlayersRoles is null || !PlayersRoles.ContainsKey(playerIndex))
+      return "";
+
+    return PlayersRoles[playerIndex];
+  }
+
+
+  public string GetNeutralWinText(int playerIndex)
+  {
+    var roleKey = GetRoleKey(playerIndex);
+    if (string.IsNullOrEmpty(roleKey) )
+      return "";
+
+    var playerData = GameplayStatics.GetPlayerData(playerIndex);
+    if (playerData is null)
+      return "";
+    
+    if (roleKey == SeerRole.Key) 
+      return $"Congrats to {playerData?.State?.Name} for launching flask";
+
+
+    return $"Congrats to {playerData?.State?.Name} for successing its goal";
+  }
+
+  public string GetNeutralIcon(int playerIndex)
+  {
+    var roleKey = GetRoleKey(playerIndex);
+    if (string.IsNullOrEmpty(roleKey) )
+      return "/textures/roles/card_role_unknown.svg";
+
+    return GameplayStatics.GetRegisteredRole(roleKey).GetIcon();
+  }
+
+
+  @* public string GetCongratsWinnerTeamText()
+  {
+    if (WinnerTeam == RoleTeam.WEREWOLVES)
+    {
+
+    }
+  } *@
+
+  public string WinnerText;
+
+  public Dictionary<int, string> PlayersRoles;
+  public List<int> Winners;
+  public RoleTeam WinnerTeam;
+}

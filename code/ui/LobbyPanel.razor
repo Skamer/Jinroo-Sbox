@@ -1,0 +1,208 @@
+@using System;
+@using Sandbox;
+@using Sandbox.UI;
+@using Sandbox.Network;
+
+@inherits PanelComponent
+@namespace Jinroo
+
+<root>
+	<div class="top-info">
+		<p class="title">@Networking.HostConnection.DisplayName</p>
+		<div class="roles">
+			@foreach (KeyValuePair<string, int> pair in RolesAmount)
+			{
+				<RoleBadge
+					Count=@(pair.Value.ToString())
+					DisplayCount=@(pair.Value > 1 ? true : false)
+					Icon=@(GameplayStatics.GetRegisteredRole(pair.Key).GetIcon())
+					RoleKey=@(pair.Key)
+				/>
+			}
+
+			@* @for(int i = 0; i < 16; i++) {
+				<RoleBadge Count="2" DisplayCount=@true Icon="/textures/roles/card_role_hunter.svg"/>
+			} *@
+		</div>
+		<p class="title"></p>
+
+	</div>
+
+	<div class="info">
+		<div class="info-left">
+			<div class="players">
+				<p class="title">Players: @Networking.Connections.Count() / 16</p>
+				<div class="player-cards">
+					@{
+						var i = 0;
+						foreach (var player in Networking.Connections)
+						{
+							@if (i % 2 == 0)
+							{
+								<LobbyPlayerCard Avatar=@($"avatar:{@player.SteamId}") Name=@player.DisplayName IsReady=@IsPlayerReady(player) />
+							} else {
+								<LobbyPlayerCard Avatar=@($"avatar:{@player.SteamId}") Name=@player.DisplayName IsReady=@IsPlayerReady(player) />
+							}
+							i++;
+						}
+					}
+
+					@foreach (var player in Networking.Connections) {
+						<div></div>
+					}
+				</div>
+			</div>
+				<div class="btn-leave" @onclick=@(() => LeaveLobby())>Leave</div>
+		</div>
+		<div class="info-middle">
+			<div>
+				<ChatLobby @ref="Chat" OnMessageEntered=@Multicast_SendChatMessage />
+			</div>
+		</div>
+		<div class="info-right">
+			@if (Connection.Local.IsHost) {
+				<GameLobbySettingsPanel OnRoleSettingsChanged=@OnRoleSettingChangedHandler OnBotValueChanged=@OnBotValueChanged/>
+			}
+
+			@if (Connection.Local.IsHost)
+			{
+				<div class=@(IsReadyToStart() ? "btn-start" : "btn-start btn-start-disabled") @onclick=@(() => StartGame())>Start</div>
+			} else {
+				<div></div>
+				<div class="btn-start"@onclick=@(() => ToggleReady())>Ready</div>
+			}
+		</div>
+	</div>
+</root>
+
+@code
+{
+	public event Action OnConfirmStart;
+
+	[Property] public GameLobby Lobby;
+
+	[Sync] public NetDictionary<Guid, bool> PlayersReady { get; set; } = new();
+
+	[Sync] public NetDictionary<string, int> RolesAmount { get; set;} = new();
+
+	[Sync] private int Version { get; set;} = 0;
+
+	public int MaxBot = 0;
+	
+	private ChatLobby Chat;
+
+
+
+	void LeaveLobby() {
+		
+		GameManager.ActiveScene.LoadFromFile("scenes/main.scene");
+		GameNetworkSystem.Disconnect();
+	}
+
+	void StartGame() {
+
+		if (IsReadyToStart()) {
+			OnConfirmStart?.Invoke();
+			Lobby?.StartGame();
+		}
+	}
+	private bool IsReady = false;
+	
+	public void ToggleReady() 
+	{
+		IsReady = !IsReady;
+
+		Server_SetIsPlayerReady(IsReady);
+	}
+
+	public bool IsPlayerReady(Connection player)
+	{
+		if (player.IsHost)
+			return true;
+
+		bool ready = false;
+
+		if (PlayersReady.ContainsKey(player.Id))
+		{
+			ready = PlayersReady[player.Id];
+		}
+
+		return ready;
+	}
+
+	public bool IsReadyToStart()
+	{
+		if (!GameplayStatics.IsHost())
+			return false; 
+
+		foreach(var player in Networking.Connections) {
+			if (!IsPlayerReady(player))
+				return false;
+		}
+
+		return true;
+	}
+
+	[Broadcast] 
+	private void Server_SetIsPlayerReady(bool IsReady)
+	{
+		if (!GameplayStatics.IsHost())
+			return;
+
+		var playerId = Rpc.CallerId;
+
+		if (!IsReady && PlayersReady.ContainsKey(playerId))
+		{
+			PlayersReady.Remove(playerId);
+		} 
+		else {
+			PlayersReady[playerId] = true;
+		}
+
+		// We increment the version for triggering the change to all clients
+		Version++;
+	}
+
+
+	public void OnRoleSettingChangedHandler(string role, int amount)
+	{
+		Server_SetRoleAmount(role, amount);
+	}
+
+	public void OnBotValueChanged(float value)
+	{
+		MaxBot = (int)value;
+	}
+
+	[Broadcast(NetPermission.HostOnly)]
+	private void Server_SetRoleAmount(string role, int amount)
+	{
+		if(!GameplayStatics.IsHost())
+			return;
+
+		if (RolesAmount.ContainsKey(role) && amount <= 0)
+		{
+			RolesAmount.Remove(role);
+		}
+		else {
+			RolesAmount[role] = amount;
+		}
+
+		// We increment the version for triggering the change to all clients
+		Version++;
+	}
+
+	[Broadcast]
+	private void Multicast_SendChatMessage(string message)
+	{
+		if (Chat is null) 
+			return; 
+
+		Chat.AddEntry(Rpc.Caller.DisplayName, message);
+	}
+
+	/// <summary>
+	/// the hash determines if the system should be rebuilt. If it changes, it will be rebuilt
+	/// </summary>
+	protected override int BuildHash() => System.HashCode.Combine( Version, IsReadyToStart());
+}

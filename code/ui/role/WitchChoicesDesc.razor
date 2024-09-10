@@ -1,0 +1,26 @@
+@using Sandbox;
+@using Sandbox.UI;
+
+@inherits Panel
+@attribute [StyleSheet]
+@namespace Jinroo
+
+<root>
+  @if(string.IsNullOrEmpty(Target))
+  {
+    <div class="target">@($"Strange ! No one has fallen victim to the werewolves !"</div>
+  }
+  else 
+  {
+    <div class="target">@($"{Target} has been targetted by the werewolves."</div>
+  }
+  <div class="description">
+    <div>You can use a life potion to save the life of a player who has been targeted by the werewolves, cast a death potion to kill a targeted player, or do nothing. You are entitled to one potion of each type.</div>
+  </div>
+</root>
+
+@code 
+{
+  public string Target;
+
+}

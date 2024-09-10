@@ -1,0 +1,48 @@
+@using Sandbox;
+@using Sandbox.UI
+
+@inherits Panel
+@namespace Jinroo
+@attribute [StyleSheet]
+
+<root>
+  <div class="title">@GetTitle()</div>
+  <div class="role-team">
+    <div class="role-label ">Win condition:</div>
+    <div class="role-text ">@GetGoal()</div>
+  </div>
+  <div class="role-skill">
+    <div class="role-label ">Ability:</div>
+    <div class="role-text ">@GetSkill()</div>
+  </div>
+</root>
+
+@code {
+  public string RoleKey;
+
+  public string GetTitle()
+  { 
+    if (string.IsNullOrEmpty(RoleKey))
+      return "";
+
+    return GameplayStatics.GetRegisteredRole(RoleKey)?.GetName();
+  }
+
+  public string GetGoal()
+  {
+    if (string.IsNullOrEmpty(RoleKey))
+      return "";
+  
+    return GameplayStatics.GetRegisteredRole(RoleKey)?.GetWinConditionTest();
+  }
+
+  public string GetSkill()
+  {
+    if (string.IsNullOrEmpty(RoleKey))
+      return "";
+
+     return GameplayStatics.GetRegisteredRole(RoleKey)?.GetAbilityText();
+  }
+
+  protected override int BuildHash() => System.HashCode.Combine( RoleKey);
+}

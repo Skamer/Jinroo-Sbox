@@ -1,0 +1,210 @@
+@using System;
+@using Sandbox;
+@using Sandbox.UI;
+@inherits PanelComponent
+@namespace Jinroo
+
+<root>
+	<div class="top">
+		<div class="phase">
+			<div class="head">
+				<div class="icon">
+					<img src=@GetPhaseIcon()/>
+				</div>
+				<div class="name">@GetPhaseText()</div>
+			</div>
+			<div class="timer">@GetPhaseTimeText()</div>
+		</div>
+		@* <div class="roles">
+					<RoleBadge
+						Count=@(1.ToString())
+						DisplayCount=@true
+						Icon="/textures/roles/card_role_villagers.svg"
+					/>
+		</div> *@
+		<RolesList class="roles" RolesAmount=@RolesAmount />
+	</div>
+	@* <div class="phase">
+		<div class="head">
+			<div class="icon">(Icon)</div>
+			<div class="name">@GetPhaseText()</div>
+		</div>
+		<div class="timer">@GetPhaseTimeText()</div>
+	</div>
+				<RoleBadge
+					Count=@(1.ToString())
+					DisplayCount=@true
+					Icon="/textures/roles/card_role_villagers.svg"
+				/>
+	<p class="title role">Your role: @GameplayStatics.GetLocalPlayerData()?.Controller?.Role </p> *@
+	<GameChat @ref="Chat" class="chat"  @OnMessageEntered=@OnGameChatMessage />
+	@if (Role is not null)
+	{
+		<div class="player-roles"
+			<img class="player-role" src=@(Role.GetIcon()) />
+		</div>
+	}
+
+	@if (IsEndGame)
+	{
+		@if(IsWin)
+		{
+			<div class="end-announce victory">Victory</div>
+		}
+		else 
+		{
+			<div class="end-announce defeat">Defeat</div>
+		}
+
+		<div class="end-game-panel">
+			<EndGamePanel @ref="EndPanel"
+				OnReturnToLobby=@(() => ReturnToLobby())
+				WinnerText=@WinnerText 
+				Winners=@Winners 
+				PlayersRoles=@PlayersRoles 
+				WinnerTeam=@WinnerTeam />
+		</div>
+	}
+	<div class="reticle"></div>
+	
+</root>
+
+@code
+{
+	public GamePhaseType Phase;
+
+	public float PhaseTimeoutTime;
+
+	public ARole Role;
+
+	public GameChat Chat;
+
+	public EndGamePanel EndPanel;
+
+	public Action<string, GameChannels> OnChatMessageEntered;
+
+	public bool IsWin = false;
+	public bool IsEndGame = false;
+
+  public string WinnerText;
+
+  public Dictionary<int, string> PlayersRoles;
+  public List<int> Winners;
+  public RoleTeam WinnerTeam;
+
+	public Dictionary<string, int> RolesAmount = new();
+
+	protected override void OnUpdate()
+	{
+		base.OnUpdate();
+
+		if (Input.Pressed("ToggleMouseCursor"))
+		{
+			if(Panel.HasClass("mouse-cursor"))
+			{
+				Panel.RemoveClass("mouse-cursor");
+			}
+			else 
+			{
+				Panel.AddClass("mouse-cursor");
+			}
+		}
+	}
+
+	protected override void OnDisabled()
+	{
+		base.OnDisabled();
+
+		IsWin = false; 
+		IsEndGame = false;
+		PlayersRoles = null;
+		Winners = null;
+		Role = null;
+	}
+
+	public string GetPhaseText()
+	{
+		
+		switch(Phase) 
+		{
+			case GamePhaseType.STARTUP:
+				return "Startup";
+			case GamePhaseType.DUSK:
+				return "Dusk";
+			case GamePhaseType.VILLAGE_VOTE:
+				return "Village Vote";
+			case GamePhaseType.WEREWOLVES:
+				return "Werewolves";
+			case GamePhaseType.WITCH:
+				return "Witch";
+			case GamePhaseType.SEER:
+				return "Seer";
+			case GamePhaseType.CUPID:
+				return "Cupid";
+			case GamePhaseType.HUNTER_LAST_STAND:
+				return "Hunter Last Stand";
+			case GamePhaseType.UNKNOWN:
+				return "???";
+		}
+
+		return "Something...";
+	}
+
+	public string GetPhaseIcon()
+	{
+		switch(Phase)
+		{
+			case GamePhaseType.STARTUP:
+				return "textures/phases/hourglass_icon.svg";
+			case GamePhaseType.DUSK:
+				return "textures/phases/moon_phase.svg";
+			case GamePhaseType.VILLAGE_VOTE:
+				return "textures/phases/village_vote_phase.svg";
+			case GamePhaseType.WEREWOLVES:
+				return "textures/phases/werewolves_phase.svg";
+			case GamePhaseType.WITCH:
+				return "textures/phases/witch_phase.svg";
+			case GamePhaseType.SEER:
+				return "textures/phases/seer_phase.svg";
+			case GamePhaseType.CUPID:
+				return "textures/phases/cupid_phase.svg";
+			case GamePhaseType.HUNTER_LAST_STAND:
+				return "textures/phases/hunter_phase.svg";
+			case GamePhaseType.UNKNOWN:
+				return "textures/phases/unknown_phase.svg";
+		}
+
+		return "textures/phases/unknown_phase.svg";
+	}
+
+	public string GetPhaseTimeText()
+	{
+		if (PhaseTimeoutTime <= 0)
+			return "";
+
+		var timeLeft = MathF.Max(PhaseTimeoutTime - RealTime.Now, 0);
+		var t = TimeSpan.FromSeconds(timeLeft);
+		
+		return $"{t.Minutes}:{t.Seconds:D2}";
+	}
+
+	public void ReturnToLobby()
+	{
+		var lobby = Scene.GetAllComponents<GameLobby>().FirstOrDefault();
+		lobby?.ReturnFromGame();
+
+	}
+
+	public void OnGameChatMessage(string message, GameChannels channel)
+	{
+		var controller = GameplayStatics.GetLocalPlayerData()?.Controller;
+		controller?.OnChatMessageEntered(message, channel);
+	}
+
+
+	/// <summary>
+	/// the hash determines if the system should be rebuilt. If it changes, it will be rebuilt
+	/// </summary>
+	protected override int BuildHash() => System.HashCode.Combine( RealTime.Now);
+
+}

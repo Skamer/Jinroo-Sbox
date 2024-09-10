@@ -1,0 +1,23 @@
+@using Sandbox;
+@using Sandbox.UI;
+@using Sandbox.Network;
+
+@inherits Panel
+@attribute [StyleSheet]
+@namespace Jinroo
+
+<root>
+
+	@foreach (KeyValuePair<string, int> pair in RolesAmount)
+		{
+		  <RoleBadge
+				Count=@(pair.Value.ToString())
+				DisplayCount=@(pair.Value > 1 ? true : false)
+				Icon=@(GameplayStatics.GetRegisteredRole(pair.Key).GetIcon())
+			/>
+		}
+</root>
+
+@code {
+  public Dictionary<string, int> RolesAmount {get; set;} = new();
+}

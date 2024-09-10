@@ -1,0 +1,81 @@
+@using System.Threading.Tasks;
+@using Sandbox;
+@using Sandbox.UI;
+@using Sandbox.Network;
+
+@inherits PanelComponent
+@namespace Jinroo
+
+<root>
+	@switch (MenuLocation)
+	{
+		case MenuLocationType.LobbyList:
+			<div class="lobby-menu">
+				<span class="title">Lobby Number: @(Lobbies.Count)</span>
+				<div class="lobbies">
+					@foreach (LobbyInformation lobby in Lobbies)  {
+						<did class="lobby-card" @onclick=@(() => JoinLobby(lobby))>
+							<span class="title">@lobby.Name</span>
+							<div class="info">@lobby.Members Player(s)</div>
+						</did>
+					}
+				</div>
+				<div class="title" @onclick=@(() => MenuLocation = MenuLocationType.Main)>Back</div>
+			</div>
+			break;
+		default:
+			<div class="main-choices">
+				<p class="main-choice" @onclick=@(() => CreateLobby())>Create a Lobby</p>
+				<p class="main-choice" @onclick=@(() => MenuLocation = MenuLocationType.LobbyList)>Join a Lobby</p>
+			</div>
+		break;
+	}
+</root>
+
+
+@code
+{
+
+	public enum MenuLocationType {
+		Main,
+		LobbyList
+	}
+
+	public MenuLocationType MenuLocation = MenuLocationType.Main;
+
+	private List<LobbyInformation> Lobbies { get; set; } = new();
+
+	protected override void OnEnabled()
+	{
+		base.OnEnabled();
+
+		_ = RefreshLobbies();
+
+	}
+
+	
+	private async Task RefreshLobbies()
+	{
+		while (true) {
+			Lobbies = await Networking.QueryLobbies();
+
+			StateHasChanged();
+
+			await Task.DelayRealtimeSeconds(1f);
+		}
+	}
+
+	public void JoinLobby(LobbyInformation lobby)
+	{
+		GameNetworkSystem.Connect(lobby.LobbyId);
+	}
+
+	void CreateLobby() {
+		GameManager.ActiveScene.LoadFromFile("scenes/gamelobby.scene");
+	}
+
+	/// <summary>
+	/// the hash determines if the system should be rebuilt. If it changes, it will be rebuilt
+	/// </summary>
+	protected override int BuildHash() => System.HashCode.Combine( MenuLocation);
+}

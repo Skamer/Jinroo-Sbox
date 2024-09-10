@@ -1,0 +1,89 @@
+ChoicesPanel {
+  position: absolute;
+  z-index: 10;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  justify-content: center;
+  align-items: center;
+  font-weight: bold;
+  pointer-events: all;
+}
+
+.choices-window {
+  background-color: rgb(26, 26, 32);
+  border-radius: 20px;
+  flex-direction: column;
+  width: 600px;
+  justify-content: space-between;
+  padding-bottom: 20px;
+  gap: 20px;
+
+  .head {
+    background-color: orange;
+    border-radius: 20px 20px 0% 0%;
+    padding: 5px;
+    gap: 10px;
+
+    .icon {
+      width: 54px;
+      height: 54px;
+      border-radius: 50%;
+      background-size: contain;
+    }
+
+    .title {
+      font-size: 20px;
+      font-weight: 800;
+      color: white;
+      align-items: center;
+    }
+  }
+
+  .content {
+    padding-left: 10px;
+    padding-right: 10px;
+
+    .description {
+      background-color: rgba(38, 88, 180, 0.87);
+      color: white;
+      border-radius: 5px;
+      width: 100%;
+      padding: 5px;
+    }
+  }
+
+  .choices {
+    flex-direction: column;
+    gap: 10px;
+    padding-left: 50px;
+    padding-right: 50px;
+  }
+}
+
+// .choices-window {
+//   position: absolute;
+//   z-index: 100;
+//   width: 500px;
+//   height: 600px;
+//   flex-direction: column;
+//   color: white;
+// }
+
+.choices-window-title {
+  background-color: orange;
+}
+
+.choices-window-content {
+  background-color: #16003f;
+  padding: 50px 10px 50px 10px;
+  flex-direction: column;
+}
+
+.choices-window-items {
+  padding: 50px 10px 50px 10px;
+  background-color: #a09004;
+  flex-direction: column;
+  gap: 10px;
+}

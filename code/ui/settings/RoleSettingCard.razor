@@ -1,0 +1,85 @@
+@using System
+@using Sandbox;
+@using Sandbox.UI
+
+
+@namespace Jinroo
+@attribute [StyleSheet]
+@inherits Panel
+
+<root>
+  <img class="icon" src=@Icon />
+  @if (IsActionVisible(ActionType.DECREMENT))
+  {
+    <div class="side-action side-action-minus" @onclick=@(() => Decrement())>-</div>
+  }
+  @if( IsActionVisible(ActionType.INCREMENT)) {
+    <div class="side-action side-action-plus " @onclick=@(() => Increment())>+</div>
+  }
+
+  <div class="counter-action">@Amount</div>
+</root>
+
+@code {
+  public Action<string, int> OnSettingsChanged;
+
+  public bool ShowActions  = true;
+
+  public bool IsUnique = false;
+
+  public string RoleKey;
+
+  public string Icon = "/textures/roles/card_role_unknown.svg";
+  
+
+  int _amount = 0;
+  public int Amount { 
+    get => _amount;
+    set {
+      if (value < 0)
+        _amount = 0;
+      else 
+        _amount = value;
+    }
+  }
+
+  private void Increment() {
+    Amount++;
+
+    OnSettingsChanged?.Invoke(RoleKey, Amount);
+  }
+
+  private void Decrement() 
+  {
+    Amount--;
+
+    OnSettingsChanged?.Invoke(RoleKey, Amount);
+  }
+
+  private void Toggle()
+  {
+    Amount = Amount > 0 ? 0 : 1;
+
+    OnSettingsChanged?.Invoke(RoleKey, Amount);
+  }
+
+  enum ActionType {
+    INCREMENT,
+    DECREMENT,
+  }
+
+  private bool IsActionVisible(ActionType action)
+  {
+    if (!ShowActions)
+      return false;
+
+    if (action == ActionType.DECREMENT && Amount <= 0)
+      return false;
+    else if (action == ActionType.INCREMENT && Amount == 1 && IsUnique)
+      return false;
+
+    return true;
+  }
+
+  protected override int BuildHash() => HashCode.Combine(RoleKey, Icon, Amount, ShowActions, IsUnique);
+}

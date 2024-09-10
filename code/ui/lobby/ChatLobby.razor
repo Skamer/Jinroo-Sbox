@@ -1,0 +1,76 @@
+@using System
+@using Sandbox;
+@using Sandbox.UI;
+@using Sandbox.Network;
+
+@namespace Jinroo
+@attribute [StyleSheet]
+@inherits Panel
+
+
+<root>
+  <div @ref="Output" class="output">
+    @foreach (Entry entry in Entries) 
+    {
+      <div class="entry">
+        <div class="author">@entry.author</div>
+        <div class="message">@entry.message</div>
+      </div>
+    }
+  </div>
+
+  <div class="input">
+    <TextEntry @ref="InputBox" onsubmit="@ChatFinished"></TextEntry>
+  </div>
+</root>
+
+@code 
+{
+  public record Entry(string author, string message, RealTimeSince timeSinceAdded);
+
+  private List<Entry> Entries {get; set;} = new();
+
+  private TextEntry InputBox { get; set;}
+
+  private Panel Output;
+
+  public Action<string> OnMessageEntered;
+
+  public override void Tick()
+  {
+    if (InputBox is null) 
+      return; 
+
+    if (Input.Pressed("chat"))
+    {
+      InputBox.Focus();
+    }
+
+  }
+
+
+  public void AddEntry(string author, string message)
+  {
+
+    Entries.Add(new (author, message, 0f));
+
+    StateHasChanged();
+
+    
+    if (Output is not null)
+      Output.PreferScrollToBottom = true;
+  }
+
+  private void ChatFinished()
+  {
+    var text = InputBox.Text;
+    InputBox.Text = "";
+
+    if (string.IsNullOrWhiteSpace(text))
+      return;
+
+    OnMessageEntered?.Invoke(text);
+
+  }
+
+}

@@ -1,0 +1,104 @@
+LobbyPanel {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-image: url("textures/bg_menu.svg");
+  background-size: 100% 100%;
+  font-weight: bold;
+
+  justify-content: space-between;
+  align-items: stretch;
+  flex-direction: column;
+  pointer-events: all;
+  padding: 10px;
+
+  .title {
+    font-size: 25px;
+    font-family: Poppins;
+    color: #fff;
+  }
+
+  .btn-start {
+    background-color: #27ae60;
+    font-size: 20px;
+    font-family: Poppins;
+    padding: 5px;
+    width: 175px;
+    &:hover {
+      background-color: #34e27c;
+    }
+  }
+
+  .btn-start-disabled {
+    background-color: gray;
+  }
+
+  .btn-leave {
+    background-color: #a03729;
+    font-size: 20px;
+    font-family: Poppins;
+    padding: 5px;
+    width: 175px;
+
+    &:hover {
+      background-color: #e04d39;
+    }
+  }
+
+  .top-info {
+    justify-content: space-between;
+    gap: 10px;
+    height: 80px;
+  }
+
+  .center-info {
+    flex-grow: 20;
+  }
+
+  .bottom-info {
+    justify-content: space-between;
+    padding: 10px;
+  }
+
+  .roles {
+    gap: -10px;
+    overflow-x: scroll;
+  }
+
+  .players {
+    flex-direction: column;
+    margin-top: 40px;
+    margin-left: 40px;
+    gap: 8px;
+    width: 600px;
+
+    .player-cards {
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+  }
+
+  .info {
+    justify-content: space-between;
+    flex-grow: 1;
+  }
+
+  .info-left {
+    flex-direction: column;
+    justify-content: space-between;
+  }
+
+  .info-middle {
+    flex-direction: column;
+    justify-content: flex-end;
+  }
+
+  .info-right {
+    flex-direction: column;
+    justify-content: space-between;
+    flex-grow: 1;
+    align-items: flex-end;
+  }
+}

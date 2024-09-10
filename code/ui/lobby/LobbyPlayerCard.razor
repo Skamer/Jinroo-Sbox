@@ -1,0 +1,34 @@
+@using System;
+@using Sandbox;
+@using Sandbox.UI;
+
+@namespace Jinroo
+@attribute [StyleSheet]
+@inherits Panel
+<root>
+  <div class="card">
+    <img class="avatar" src=@Avatar />
+    <p class="name">@Name</p>
+    <div class=@GetCircleCLass()></div>
+  </div>
+</root>
+
+@code 
+{
+  [Property] public string Name;
+
+  [Property] public string Avatar;
+
+  [Property] public bool IsReady = true;
+
+
+  public string GetCircleCLass() {
+    if(IsReady) {
+      return "circle ready";
+    }
+
+    return "circle not-ready";
+  }
+
+    protected override int BuildHash() =>  HashCode.Combine(Name, Avatar, IsReady);
+}

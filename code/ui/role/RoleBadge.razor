@@ -1,0 +1,58 @@
+@using Sandbox;
+@using Sandbox.UI;
+@using Sandbox.Network;
+
+@inherits Panel
+@attribute [StyleSheet]
+@namespace Jinroo
+
+<root>
+  <div class="badge">
+    <img class="icon" src=@Icon />
+    @if (DisplayCount)
+    {
+      <div class="counter"><span>@Count</span></div>
+    }
+  </div>
+</root>
+
+@code 
+{
+  public string Icon { get; set; } = "/textures/roles/card_role_unknown.svg";
+
+  public override void Tick() 
+  {
+
+    if (HasHovered)
+    {
+      Tooltip = RoleKey;
+    } 
+    else 
+    {
+      Tooltip = "";
+    }
+  }
+
+  public string Count { get; set; } = "";
+
+   public bool DisplayCount { get; set; } = true;
+
+   public string RoleKey;
+
+   public virtual bool HasTooltip => !string.IsNullOrWhiteSpace(Tooltip) && !string.IsNullOrEmpty(RoleKey);
+
+   protected override Panel CreateTooltipPanel()
+   {
+
+    if (Tooltip == null)
+      return null;
+
+    var gameTooltip = new GameTooltip();
+    gameTooltip.RoleKey = RoleKey;
+    gameTooltip.Parent = FindRootPanel();
+
+
+
+    return gameTooltip;
+   }
+}

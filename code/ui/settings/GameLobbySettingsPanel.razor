@@ -1,0 +1,55 @@
+@using System
+@using Sandbox;
+@using Sandbox.UI
+
+@inherits Panel
+@namespace Jinroo
+@attribute [StyleSheet]
+
+<root>
+  <p class="heading">Maximum number of bots</p>
+  <div class="players-slider">
+    <div class="players-range">
+      <div class="player-range-text">0</div>
+      <div class="player-text">@MaxPlayerSlider?.Value</div>
+      <div class="player-range-text">16</div>
+    </div>
+    <SliderControl @ref=MaxPlayerSlider OnValueChanged=@OnBotSliderChanged />
+  </div>
+  <p class="heading">Roles</p>
+  <div class="roles">
+    @* @for  (var i = 0; i < 16; i++)
+    {
+      <RoleSettingCard />
+    } *@
+
+    @foreach (var role in GameplayStatics.GetRegisteredRoles())
+    {
+      <RoleSettingCard RoleKey=@role.GetKey() Icon=@role.GetIcon() IsUnique=@role.IsUnique() OnSettingsChanged=@OnRoleSettingsChanged />
+    }
+  </div>
+</root>
+
+@code {
+  public SliderControl MaxPlayerSlider { get; set;}
+
+  public Action<string, int> OnRoleSettingsChanged;
+
+  public Action<float> OnBotValueChanged;
+
+  public void OnBotSliderChanged(float botAmount)
+  {
+    OnBotValueChanged?.Invoke(botAmount);
+  }
+
+  protected override void OnAfterTreeRender(bool firstTime)
+  {
+    MaxPlayerSlider.Max = 16f;
+    MaxPlayerSlider.Min = 0f;
+    MaxPlayerSlider.Step = 1f;
+    MaxPlayerSlider.ShowRange = false;
+    MaxPlayerSlider.ShowValueTooltip = false;
+    MaxPlayerSlider.ShowTextEntry = false;
+  }
+ 
+}

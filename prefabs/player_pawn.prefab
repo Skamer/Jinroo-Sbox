@@ -1,0 +1,297 @@
+{
+  "RootObject": {
+    "__guid": "21f9a192-bbc6-4e6a-b9e1-ee7e74768432",
+    "Name": "player_pawn",
+    "Tags": "player",
+    "Enabled": true,
+    "NetworkMode": 2,
+    "Children": [
+      {
+        "__guid": "67266c15-6e61-4b86-ad9a-3a66a803a3b6",
+        "Name": "Model",
+        "Enabled": true,
+        "NetworkMode": 2,
+        "Components": [
+          {
+            "__type": "SkinnedModelRenderer",
+            "__guid": "504d8147-8f69-457c-9999-fe5612186660",
+            "BodyGroups": 341,
+            "CreateBoneObjects": false,
+            "Model": "models/citizen/citizen.vmdl",
+            "RenderType": "On",
+            "Tint": "1,1,1,1"
+          },
+          {
+            "__type": "CitizenAnimationHelper",
+            "__guid": "e07b1949-8194-4839-9edc-a94e1389bfe8",
+            "BodyWeight": 1,
+            "EyesWeight": 1,
+            "HeadWeight": 1,
+            "Height": 1,
+            "LookAtEnabled": false
+          },
+          {
+            "__type": "HighlightOutline",
+            "__guid": "0f313775-2f35-4abe-9d62-47ac86dd2ec0",
+            "__enabled": false,
+            "Color": "1,1,1,1",
+            "InsideColor": "0,0,0,0",
+            "InsideObscuredColor": "0,0,0,0",
+            "ObscuredColor": "0,0,0,0.4",
+            "Width": 0.25
+          }
+        ]
+      },
+      {
+        "__guid": "b4c2f947-517d-40a7-ac35-8afce3862610",
+        "Name": "Camera",
+        "Position": "0,0,64.06448",
+        "Tags": "maincamera",
+        "Enabled": true,
+        "NetworkMode": 2,
+        "Components": [
+          {
+            "__type": "CameraComponent",
+            "__guid": "39e1615b-5d2f-400f-aa17-9763860dced9",
+            "BackgroundColor": "0.33333,0.46275,0.52157,1",
+            "ClearFlags": "All",
+            "FieldOfView": 60,
+            "IsMainCamera": false,
+            "Orthographic": false,
+            "OrthographicHeight": 1204,
+            "Priority": 1,
+            "RenderExcludeTags": "",
+            "RenderTags": "",
+            "TargetEye": "None",
+            "Viewport": "0,0,1,1",
+            "ZFar": 4000,
+            "ZNear": 15
+          },
+          {
+            "__type": "Highlight",
+            "__guid": "aee281a9-53b4-4408-ad0d-6bf2fbb3d69c"
+          },
+          {
+            "__type": "ColorAdjustments",
+            "__guid": "e70ce2dd-e483-4c6c-9cc8-a59b1c716e78",
+            "__enabled": false,
+            "Brightness": 1,
+            "Contrast": 1,
+            "HueRotate": 0,
+            "Saturation": 0
+          }
+        ]
+      },
+      {
+        "__guid": "299a795f-606b-476c-8068-8bce96abbdc9",
+        "Name": "World",
+        "Position": "0,0,90.77545",
+        "Enabled": true,
+        "NetworkMode": 2,
+        "Components": [
+          {
+            "__type": "WorldPanel",
+            "__guid": "7e676108-fd37-4209-9b5b-973396270f56",
+            "HorizontalAlign": "Center",
+            "LookAtCamera": true,
+            "PanelSize": "1500,512",
+            "RenderScale": 1,
+            "VerticalAlign": "Center"
+          },
+          {
+            "__type": "Nameplate",
+            "__guid": "52e0c9a2-a95e-4b63-865c-1cacc2a69177"
+          }
+        ]
+      },
+      {
+        "__guid": "40e1c7d8-de06-4877-88da-0586aa2eef69",
+        "Name": "SelfVoteCollider",
+        "Position": "1.328614,0,15.94306",
+        "Enabled": true,
+        "NetworkMode": 2,
+        "Components": [
+          {
+            "__type": "BoxCollider",
+            "__guid": "35c110c5-4dbb-40cf-a137-04e30ef136fe",
+            "Center": "0,0,0",
+            "IsTrigger": false,
+            "Scale": "30,35,30",
+            "Static": false
+          }
+        ]
+      },
+      {
+        "__guid": "95b4543e-890b-4b50-9d71-81098ca11f99",
+        "Name": "VoteCollider",
+        "Position": "0,0,40.96858",
+        "Enabled": true,
+        "NetworkMode": 2,
+        "Components": [
+          {
+            "__type": "BoxCollider",
+            "__guid": "82c49399-5100-4c98-8aa8-41c35ff734f2",
+            "Center": "0,0,0",
+            "IsTrigger": false,
+            "Scale": "30,55,80",
+            "Static": false
+          }
+        ]
+      },
+      {
+        "__guid": "cd76b167-eb69-49bb-80f9-43246b6b1f6a",
+        "Name": "Smoke",
+        "Tags": "particles",
+        "NetworkMode": 2,
+        "Components": [
+          {
+            "__type": "ParticleEffect",
+            "__guid": "9f3d008c-edc3-4a01-89ad-08a2f9ea6996",
+            "Alpha": {
+              "Type": "Curve",
+              "CurveA": [
+                {
+                  "in": -39.333374,
+                  "out": 39.333374
+                },
+                {
+                  "x": 0.070197046,
+                  "y": 1
+                },
+                {
+                  "x": 1
+                }
+              ],
+              "Constants": "1,0,0,0"
+            },
+            "ApplyColor": true,
+            "ApplyRotation": true,
+            "ApplyShape": true,
+            "Bounce": {
+              "Constants": "1,0,0,0"
+            },
+            "Brightness": {
+              "Type": "Range",
+              "Evaluation": "Particle",
+              "Constants": "1,0.4,0,0"
+            },
+            "Bumpiness": {
+              "Constants": "1,0,0,0"
+            },
+            "Collision": false,
+            "CollisionRadius": 0,
+            "Damping": {
+              "Constants": "2,0,0,0"
+            },
+            "DieOnCollisionChance": {},
+            "Force": false,
+            "ForceDirection": "0,0,0",
+            "ForceScale": {
+              "Constants": "1,0,0,0"
+            },
+            "Friction": {
+              "Constants": "1,0,0,0"
+            },
+            "Gradient": {
+              "Evaluation": "Particle",
+              "GradientA": {
+                "color": [
+                  {
+                    "t": 0.5,
+                    "c": "1,1,1,1"
+                  }
+                ],
+                "alpha": []
+              },
+              "GradientB": {
+                "color": [
+                  {
+                    "t": 0.5,
+                    "c": "1,1,1,1"
+                  }
+                ],
+                "alpha": []
+              },
+              "ConstantA": "0.37674,0.37674,0.37674,1",
+              "ConstantB": "1,1,1,1"
+            },
+            "Lifetime": {
+              "Type": "Range",
+              "Evaluation": "Particle",
+              "Constants": "1,5,0,0"
+            },
+            "MaxParticles": 100,
+            "PerParticleTimeScale": {
+              "Constants": "1,0,0,0"
+            },
+            "PreWarm": 0,
+            "PushStrength": {},
+            "Roll": {
+              "Type": "Range",
+              "Evaluation": "Particle",
+              "Constants": "0,360,0,0"
+            },
+            "Scale": {
+              "Type": "Range",
+              "Constants": "1,2,0,0"
+            },
+            "SequenceId": {},
+            "SequenceSpeed": {
+              "Constants": "1,0,0,0"
+            },
+            "SequenceTime": {
+              "Constants": "1,0,0,0"
+            },
+            "SheetSequence": false,
+            "Space": "World",
+            "StartVelocity": {
+              "Evaluation": "Particle",
+              "Constants": "10,0,0,0"
+            },
+            "Stretch": {},
+            "TimeScale": 1,
+            "Tint": "1,1,1,1"
+          },
+          {
+            "__type": "ParticleSpriteRenderer",
+            "__guid": "79d93099-dfed-41fc-8454-fc83a7cbd353",
+            "Additive": true,
+            "BlurAmount": 0.5,
+            "BlurOpacity": 0.5,
+            "BlurSpacing": 0.5,
+            "DepthFeather": 0,
+            "FaceVelocity": false,
+            "FogStrength": 1,
+            "LeadingTrail": true,
+            "MotionBlur": false,
+            "Opaque": false,
+            "RotationOffset": 0,
+            "Scale": 100,
+            "Shadows": false,
+            "SortMode": "ByDistance",
+            "Texture": "materials/particles/smoke/render/smokeloop_i_0.vtex"
+          },
+          {
+            "__type": "ParticleSphereEmitter",
+            "__guid": "bc04ba06-e16a-4d43-a6b5-73dd1db58e23",
+            "Burst": 0,
+            "Delay": 0,
+            "DestroyOnEnd": false,
+            "Duration": 10,
+            "Loop": true,
+            "OnEdge": false,
+            "Radius": 52.33,
+            "Rate": 500,
+            "Velocity": 29.15
+          }
+        ]
+      }
+    ]
+  },
+  "ShowInMenu": false,
+  "MenuPath": null,
+  "MenuIcon": null,
+  "ResourceVersion": 1,
+  "__version": 1,
+  "__references": []
+}
